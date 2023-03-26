@@ -1,0 +1,26 @@
+FROM node:18-alpine AS builder
+RUN mkdir /app
+WORKDIR /app
+COPY package.json ./
+COPY tsconfig.json ./
+COPY . ./
+RUN yarn
+RUN npm run build
+RUN ls -a
+
+#stage two, where the app actually runs
+
+FROM node:18-alpine
+RUN mkdir /app
+COPY --from=builder /app/dist /app/dist
+COPY --from=builder /app/package.json /app/yarn.lock /app/
+COPY --from=builder /app/swagger.yaml /app/
+
+WORKDIR /app
+
+RUN yarn --only=production && \
+    yarn cache clean
+
+
+EXPOSE 3030
+CMD ["node", "dist/server.js"]

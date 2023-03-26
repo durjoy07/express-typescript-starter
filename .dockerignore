@@ -1,0 +1,11 @@
+__experiment__
+.DS_Store
+.husky
+.vscode
+
+node_modules
+npm-debug.log
+
+/dist
+logs
+*.log

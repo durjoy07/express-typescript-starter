@@ -1,0 +1,147 @@
+tags:
+- name: users
+  description: Users API
+- name: audits
+  description: Audits API
+- name: products
+  description: Products API
+
+schemes:
+  - http
+  - https
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+#====================================================
+#=====================USER ROUTES====================
+#====================================================
+
+paths:
+# [GET] users
+  /users:
+    get:
+      tags:
+      - users
+      summary: Find All Users
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'
+
+# [GET] users/:id
+  /users/{id}:
+    get:
+      tags:
+      - users
+      summary: Find User by Id
+      parameters:
+      - name : id
+        in: path
+        description: user id
+        required: true
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# [POST] users/create
+  /users/create:
+    post:
+      tags:
+      - users
+      summary: Add User
+      parameters:
+      - name : body
+        in: body
+        description: user data
+        required: true
+        schema:
+          $ref: '#/definitions/users'
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# [PUT] users/update/apikey
+  /users/update/apikey:
+    put:
+      tags:
+      - users
+      summary: Update api key
+      parameters:
+      - name : body
+        in: body
+        description: users api key
+        required: true
+        schema:
+          $ref: '#/definitions/users-apikey-update'
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: 'OK'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# [DELETE] users/delete/:id
+  /users/delete/{id}:
+    delete:
+      tags:
+      - users
+      summary: Delete an user
+      parameters:
+      - name : id
+        in: path
+        description: users object id
+        required: true
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: 'Deleted'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# [POST] users/login
+  /users/login:
+    post:
+      tags:
+      - users
+      summary: Login
+      parameters:
+      - name : body
+        in: body
+        description: user data
+        required: true
+        schema:
+          $ref: '#/definitions/login'
+      responses:
+        200:
+          description: 'Success login'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
